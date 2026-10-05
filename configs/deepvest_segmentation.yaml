@@ -1,0 +1,233 @@
+# DeepVEST - 3D vessel segmentation model
+# Attention U-Net trained on 96^3 sub-volumes with dual-sequence input
+# (fat-saturated pre-contrast + 2nd post-contrast). Checkpoint used in the paper: best_model.pth
+# (best validation DSC), released as weights/deepvest_segmentation.pth.
+# Original experiment: seed34_AttentionUnet.
+
+TRAINING:
+  workspace: runs/deepvest_segmentation  # output folder
+  monai_data: data/duke_datalist_local.json  # datalist created by prepare_data.py
+  dataset_root: null  # the local datalist contains absolute paths
+  split_dir: splits/deepvest_segmentation  # fixed train/valid/test split used in the paper
+  valid_size: 0.1  # valid_size/test_size/seed: random split, used only if split_dir is null
+  test_size: 0.15
+  train_test_split_seed: 34
+  cache_ratio: 1.0  # 1.0 caches the pre-processed volumes in RAM (fast, memory-hungry); null disables caching
+  train_batch_size: 2
+  accumulation: 2  # gradient accumulation: effective batch size = train_batch_size x accumulation = 4
+  test_batch_size: 1
+  num_workers: 10
+  device: cuda:0
+  load_model: null
+  epochs: 200
+  sliding_window: true
+
+TRAIN_TRANSFORM:
+- class: monai.transforms.LoadImaged
+  params:
+    keys:
+    - pre
+    - post_2
+    # DICOM series are read with pydicom (provides the slice-order metadata used by separate_vessels_dense)
+    reader:
+      class: monai.data.PydicomReader
+      params: {}
+- class: monai.transforms.LoadImaged
+  params:
+    keys:
+    - seg
+    # annotations (.seg.nrrd, 3D or 4D layered) are read with a reader that tolerates non-spatial axes
+    reader:
+      class: customDatasets.PatchedNrrdReader
+      params: {}
+- class: monai.transforms.EnsureChannelFirstd
+  params:
+    keys:
+    - pre
+    - post_2
+    - seg
+- class: monai.transforms.ConcatItemsd
+  params:
+    keys:
+    - pre
+    - post_2
+    name: img
+    dim: 0
+- class: customTransform.separate_vessels_dense
+  params:
+    seg_key: seg
+    channel: true
+    vessels: true
+    dense: false
+    compute_backgroud: false
+    adjust_affine: img
+- class: monai.transforms.ConcatItemsd
+  params:
+    keys:
+    - vessels
+    name: seg
+    dim: 0
+- class: monai.transforms.DeleteItemsd
+  params:
+    keys:
+    - pre
+    - post_1
+    - post_2
+    - post_3
+    - post_4
+    - breast
+    - vessels
+    - seg_mip
+- class: monai.transforms.Orientationd
+  params:
+    keys:
+    - img
+    - seg
+    axcodes: LPS
+- class: monai.transforms.ScaleIntensityd
+  params:
+    keys:
+    - img
+    maxv: 1.0
+    minv: 0.0
+- class: monai.transforms.RandCropByPosNegLabeld
+  params:
+    image_key: img
+    image_threshold: 0
+    keys:
+    - img
+    - seg
+    label_key: seg
+    neg: 1
+    num_samples: 4
+    pos: 3
+    spatial_size:
+    - 96
+    - 96
+    - 96
+
+TEST_TRANSFORM:
+- class: monai.transforms.LoadImaged
+  params:
+    keys:
+    - pre
+    - post_2
+    # DICOM series are read with pydicom (provides the slice-order metadata used by separate_vessels_dense)
+    reader:
+      class: monai.data.PydicomReader
+      params: {}
+- class: monai.transforms.LoadImaged
+  params:
+    keys:
+    - seg
+    - seg_mip
+    # annotations (.seg.nrrd, 3D or 4D layered) are read with a reader that tolerates non-spatial axes
+    reader:
+      class: customDatasets.PatchedNrrdReader
+      params: {}
+- class: monai.transforms.EnsureChannelFirstd
+  params:
+    keys:
+    - pre
+    - post_2
+    - seg
+    - seg_mip
+- class: monai.transforms.ConcatItemsd
+  params:
+    keys:
+    - pre
+    - post_2
+    name: img
+    dim: 0
+- class: customTransform.separate_vessels_dense
+  params:
+    seg_key: seg
+    channel: true
+    vessels: true
+    dense: false
+    compute_backgroud: false
+    adjust_affine: img
+- class: monai.transforms.ConcatItemsd
+  params:
+    keys:
+    - vessels
+    name: seg
+    dim: 0
+- class: monai.transforms.DeleteItemsd
+  params:
+    keys:
+    - pre
+    - post_1
+    - post_2
+    - post_3
+    - post_4
+    - breast
+    - vessels
+- class: monai.transforms.Orientationd
+  params:
+    keys:
+    - img
+    - seg
+    - seg_mip
+    axcodes: LPS
+- class: monai.transforms.SqueezeDimd
+  params:
+    keys:
+    - seg_mip
+    dim: -1
+- class: monai.transforms.ScaleIntensityd
+  params:
+    keys:
+    - img
+    maxv: 1.0
+    minv: 0.0
+
+MODEL:
+  class: monai.networks.nets.AttentionUnet
+  params:
+    channels:
+    - 32
+    - 64
+    - 128
+    - 256
+    in_channels: 2
+    out_channels: 2
+    spatial_dims: 3
+    strides:
+    - 2
+    - 2
+    - 2
+
+LOSS:
+  class: monai.losses.DiceLoss
+  params:
+    softmax: true
+    to_onehot_y: true
+    include_background: false
+    squared_pred: true
+
+OPTIMIZER:
+  class: torch.optim.Adam
+  params:
+    lr: 0.0005
+
+METRIC:
+- class: monai.metrics.DiceMetric
+  params:
+    include_background: false
+    reduction: mean
+- class: customMetrics.DiceMIP
+  params:
+    include_background: false
+    reduction: mean
+
+POST_PRED:
+- class: monai.transforms.AsDiscrete
+  params:
+    argmax: true
+    to_onehot: 2
+
+POST_LABEL:
+- class: monai.transforms.AsDiscrete
+  params:
+    to_onehot: 2

@@ -1,0 +1,17 @@
+# Python
+__pycache__/
+*.py[cod]
+
+# IDE
+.idea/
+.vscode/
+
+# local datalists (absolute paths), outputs and training runs
+data/*_local.json
+outputs/
+runs/
+
+# local working folders (not part of the repository)
+_incoming/
+_smoketest/
+TODO_before_commit.md

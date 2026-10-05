@@ -1,0 +1,6 @@
+# store text files with LF line endings in the repository
+* text=auto
+
+# binary files: never apply line-ending conversion
+*.pth binary
+*.nrrd binary

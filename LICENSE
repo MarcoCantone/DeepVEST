@@ -1,0 +1,19 @@
+DeepVEST: Deep Learning-based Vessel Segmentation and Erasure in Breast MRI
+Copyright (c) 2026 Marco Cantone and the DeepVEST authors
+
+This work (source code, trained model weights and annotations) is licensed under the
+Creative Commons Attribution-NonCommercial 4.0 International License (CC BY-NC 4.0).
+
+You are free to:
+  - Share: copy and redistribute the material in any medium or format;
+  - Adapt: remix, transform, and build upon the material;
+under the following terms:
+  - Attribution: you must give appropriate credit, provide a link to the license, and
+    indicate if changes were made;
+  - NonCommercial: you may not use the material for commercial purposes.
+
+Summary: https://creativecommons.org/licenses/by-nc/4.0/
+Full legal code: https://creativecommons.org/licenses/by-nc/4.0/legalcode
+
+The Duke-Breast-Cancer-MRI and Advanced-MRI-Breast-Lesions datasets are not part of this
+repository; they are distributed by The Cancer Imaging Archive (TCIA) under their own licenses.

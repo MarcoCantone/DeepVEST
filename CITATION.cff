@@ -1,0 +1,81 @@
+cff-version: 1.2.0
+message: "If you use this code or the trained models, please cite the paper below."
+title: "DeepVEST: Deep Learning-based Vessel Segmentation and Erasure in Breast MRI"
+repository-code: "https://github.com/MarcoCantone/DeepVEST"
+license: CC-BY-NC-4.0
+authors:
+  - family-names: Cantone
+    given-names: Marco
+    affiliation: "University of Cassino and Southern Latium, Cassino, Italy; Radboud University Medical Center, Nijmegen, The Netherlands"
+  - family-names: Zhang
+    given-names: Tianyu
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+  - family-names: Marrocco
+    given-names: Claudio
+    affiliation: "University of Cassino and Southern Latium, Cassino, Italy"
+  - family-names: Han
+    given-names: Luyi
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+  - family-names: Portaluri
+    given-names: Antonio
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+  - family-names: van Dijk
+    given-names: Jarek
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+  - family-names: Sitges Puigivila
+    given-names: Carla
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+  - family-names: Braga
+    given-names: Miguel
+    affiliation: "Instituto Português de Oncologia de Lisboa Francisco Gentil, Lisbon, Portugal"
+  - family-names: Schmidt
+    given-names: Noemi
+    affiliation: "University Hospital Basel, Basel, Switzerland"
+  - family-names: Bria
+    given-names: Alessandro
+    affiliation: "University of Cassino and Southern Latium, Cassino, Italy"
+  - family-names: Mann
+    given-names: Ritse
+    affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+preferred-citation:
+  type: article
+  title: "DeepVEST: Deep Learning-based Vessel Segmentation and Erasure in Breast MRI for Improved Lesion Assessment"
+  journal: "Radiology: Artificial Intelligence"
+  year: 2026
+  start: e250630
+  doi: "10.1148/ryai.250630"
+  url: "https://doi.org/10.1148/ryai.250630"
+  authors:
+    - family-names: Cantone
+      given-names: Marco
+      affiliation: "University of Cassino and Southern Latium, Cassino, Italy; Radboud University Medical Center, Nijmegen, The Netherlands"
+    - family-names: Zhang
+      given-names: Tianyu
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+    - family-names: Marrocco
+      given-names: Claudio
+      affiliation: "University of Cassino and Southern Latium, Cassino, Italy"
+    - family-names: Han
+      given-names: Luyi
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+    - family-names: Portaluri
+      given-names: Antonio
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+    - family-names: van Dijk
+      given-names: Jarek
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+    - family-names: Sitges Puigivila
+      given-names: Carla
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
+    - family-names: Braga
+      given-names: Miguel
+      affiliation: "Instituto Português de Oncologia de Lisboa Francisco Gentil, Lisbon, Portugal"
+    - family-names: Schmidt
+      given-names: Noemi
+      affiliation: "University Hospital Basel, Basel, Switzerland"
+    - family-names: Bria
+      given-names: Alessandro
+      affiliation: "University of Cassino and Southern Latium, Cassino, Italy"
+    - family-names: Mann
+      given-names: Ritse
+      affiliation: "Radboud University Medical Center, Nijmegen, The Netherlands; Netherlands Cancer Institute (NKI), Amsterdam, The Netherlands"
